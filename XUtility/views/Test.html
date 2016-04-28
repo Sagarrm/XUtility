@@ -1,29 +1,28 @@
 <html>
-   <head>
-      <h2>Test<h2>
-      <script type = "text/javascript">
-         <!--
-            function WriteCookie()
-            {
-               if( document.myform.customer.value == "" ){
-                  alert("Enter some value!");
-                  return;
-               }
-               cookievalue= escape(document.myform.customer.value) + ";";
-               document.cookie="name=" + cookievalue;
-               document.write ("Setting Cookies : " + "name=" + cookievalue );
-            }
-         //-->
-      </script>
-      
-   </head>
-   
-   <body>
-   
-      <form name="myform" action="">
-         Enter name: <input type="text" name="customer"/>
-         <input type="button" value="Set Cookie" onclick="WriteCookie();"/>
-      </form>
-   
-   </body>
+<head>
+
+<script type="text/javascript">
+window.onload = function() {
+    var AnimalArray = ["Cat","Dog","Goat","Horse"];
+ 
+    var Animals = document.getElementById("Animals");
+    for (i=0;i<AnimalArray.length;i++)
+    {
+        var Entry = document.createElement("option");
+        Entry.text = AnimalArray[i];
+        Animals.add(Entry ,null);
+    }
+}
+</script>
+
+</head>
+<body>
+
+<form>
+<select id="Animals">
+<option value=""></option>
+</select>
+</form>
+
+</body>
 </html>

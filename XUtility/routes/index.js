@@ -22,11 +22,6 @@ storage.initSync();
 	
 router.get('/', function (req, res) {
 	
-	/*storage.setItem('count',0);
-	storage.setItem('store',"");
-	storage.setItem('limit',"");
-	*/
-	
 	displayData(req, res);
 	
 });
@@ -40,30 +35,27 @@ router.post('/', function (req, res) {
 	var allprodsArray_1;
 	var cookieSet;
 	cookieSet = req.cookies;
-	console.log("All Cookies :  ", cookieSet);
+	console.log("iN post All Cookies :  ", cookieSet);
+	
 	
 for(var cookieName in cookieSet){
-		if(cookieName == 'storeName'){
-			storage.setItem('Filter',cookieSet[cookieName]);
-			console.log("Filter :     "+storage.getItem('Filter'));
+		if(cookieName == 'storeValue'){
+			storage.setItem('limit',cookieSet[cookieName]);
+			console.log("storeValue :     "+storage.getItem('storeValue'));
 		}
 		else if(cookieName == 'showLimit'){
 			storage.setItem('limit',cookieSet[cookieName]);
-			console.log("Filter :     "+storage.getItem('limit'));
+			console.log("limit :     "+storage.getItem('limit'));
 		}
+		
 	}
-	/*if(storage.getItem('count')==0){
-		storage.setItem('store',req.body.storename);
-		storage.setItem('limit',req.body.limit);
-		storage.setItem('count',1);
-	}*/
 
-	if(storage.getItem('Filter') == ""){
+	if(storage.getItem('storeValue') == ""){
 			allprodsArray_1 = error_imports.find().limit(10);
 		}
 		else {
 			var lim = parseInt(storage.getItem('limit'));
-			allprodsArray_1 = error_imports.find({"store_name":storage.getItem('Filter')}).limit(lim);
+			allprodsArray_1 = error_imports.find({"store_name":storage.getItem('storeValue')}).limit(lim);
 		}
 	
 	allprodsArray_1.exec(function(){})
@@ -253,25 +245,26 @@ function displayData(req, res){
 		
 	var cookieSet;
 	cookieSet = req.cookies;
-	console.log("All Cookies :  ", cookieSet);
+	console.log("iN GET All Cookies :  ", cookieSet);
 	
 	for(var cookieName in cookieSet){
-		if(cookieName == 'storeName'){
-			storage.setItem('Filter',cookieSet[cookieName]);
-			console.log("Filter :     "+storage.getItem('Filter'));
+		if (cookieName == 'storeValue'){
+			storage.setItem('storeValue',cookieSet[cookieName]);
+			console.log("storeValue :     "+storage.getItem('storeValue'));
 		}
 		else if(cookieName == 'showLimit'){
 			storage.setItem('limit',cookieSet[cookieName]);
-			console.log("Filter :     "+storage.getItem('limit'));
+			console.log("limit :     "+storage.getItem('limit'));
 		}
+
 	}	
 		
-		if(storage.getItem('Filter') == ""){
+		if(storage.getItem('storeValue') == ""){
 			allprodsArray = error_imports.find().limit(10);
 		}
 		else {
 			var lim = parseInt(storage.getItem('limit'));
-			allprodsArray = error_imports.find({"store_name":storage.getItem('Filter')}).limit(lim);
+			allprodsArray = error_imports.find({"store_name":storage.getItem('storeValue')}).limit(lim);
 		}
 		
 		var allproducts = [];

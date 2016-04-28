@@ -8,12 +8,21 @@
 		<h2></h2>
 	
 	<form name="myform" action = "/" method = "post" onsubmit="WriteCookie()">
-		Store Name: <input id = "storename" name = "storename" type = "text" ng-model= "storename" value="" required></input>
-		<div style="display:none" ng-messages="userForm.storename.$error" ng-messages-include="messages.html" class="errors">
+		Store Name:<select id="storeList" required>
+			<option value=""></option>
+			<script>
+				var myArray = new Array("AllSaints","L.K. Bennett","PetSmart","Pacific Coast","Johnston & Murphy","Planet Blue","Michael Stars","Only Natural Pet","Road Runner Sports","Orvis","Tibi","Lenox","James Perse","iRobot","Three Dots","Revolve Clothing","Ernest Alexander","Swim Spot","Golf smith","Thomas Pink","Ted Baker","Neiman Marcus","Sorel","Reeds Jewelers","Free People","Stance","Veronica Beard","Pet Street Mall","Parker","Carolina Rustica","Saks Fifth Avenue","Fila","Pet Fancy","Ashley Furniture","Pet Care Choice","Bloomingdale's","Vince Camuto","NIC ZOE","Paper Source","TouchOfModern","Columbia Sportswear","Casadei","SSENSE","Billabong","Brookstone","Burke Decor","Bare Necessities","The Body Shop","Vera Bradley","Karen Millen","Macy's","7 For All Mankind","SpaceNK","Splendid","PUMA","Peace Love World| LLC","Hartford York","JAG","Design Within Reach","Donald J Pliner","Hampden Clothing","ExOfficio","Andrew Marc","Best Home Fashion Inc","Ashbury Skies","Le Creuset","LAmade Clothing","SCOOP NYC","Lulus","Sun and Ski","Kirna Zabete","Modell's Sporting Goods","Palm Beach Perfumes","Buxton Co.","Algenist","Alyaka","Black Halo","Blnts","Carole Hochman - Luxurious Lingerie","Cole Haan","Coordinates Collection","Cosabella","Crane & Co","D.L. and Co.","Durango Boots","Derek Lam","Dolce Vita","Draper James","Effy Jewelry","Fidelity Denim","French Connection","Haggar","Inhabit NY","Ink Garden","JOE'S","John Varvatos","Kate Somerville","Ledbury","OnGossamer - Luxurious| Sensual| Hip","Tailor Vintage","Volcom","KNOMOBags USA","Hudson Jeans","Citizens of Humanity");
+				for(i=0; i<myArray.length; i++) {  
+					document.write('<option value="' + myArray[i] +'">' + myArray[i] + '</option>');
+				}
+			</script>
+		</select>
+		<div style="display:none" ng-messages="userForm.storeList.$error" ng-messages-include="messages.html" class="errors">
 		</div>
 		Limit: <input id = "limit" name = "limit" type = "text" ng-model= "limit" value="" required>
 		<div style="display:none" ng-messages="userForm.limit.$error" ng-messages-include="messages.html" class="errors">
 		</div>
+		
 		<input type="submit" name="save" value="Apply Filter" />
 	</form>
 
@@ -29,17 +38,15 @@
         
             function WriteCookie()
             {
-               if( document.myform.storename.value == "" ){
+               if( document.myform.storeList.value == "" ){
                   alert("Enter some value!");
                   return;
                }
-               cookievalue= escape(document.myform.storename.value) + ";";
+               cookievalue= escape(document.myform.storeList.value) + ";";
 			   cookievalue_1= escape(document.myform.limit.value) + ";";
 			   
-               document.cookie="storeName=" + cookievalue;
+               document.cookie="storeValue=" + cookievalue; 
 			   document.cookie="showLimit=" + cookievalue_1;
-			   
-               //document.write ("Setting Cookies : " + "name=" + cookievalue );
 			   return;
             }
         
@@ -49,14 +56,15 @@
         
             function ClearCookie()
             {
-              // if( document.myform.storename.value != "" ){
-                  document.cookie="storeName=" + "";
+                  document.cookie="storeValue=" + "";
 				  document.cookie="showLimit=" + "";
+				  
                   return;
-               //}
             }
         
 </script>
+
+
 
 	  
 <script>
