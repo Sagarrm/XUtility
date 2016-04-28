@@ -1,0 +1,290 @@
+<html ng-app>
+	<head>
+		<title>XWalker</title>
+		<link rel="stylesheet" type="text/css" href="css/tablestyle.css">
+		</head>
+	<body>
+		<h2>Welcome to XWalker portal</h2>
+		<h2></h2>
+	
+	<form name="myform" action = "/" method = "post" onsubmit="WriteCookie()">
+		Store Name: <input id = "storename" name = "storename" type = "text" ng-model= "storename" value="" required></input>
+		<div style="display:none" ng-messages="userForm.storename.$error" ng-messages-include="messages.html" class="errors">
+		</div>
+		Limit: <input id = "limit" name = "limit" type = "text" ng-model= "limit" value="" required>
+		<div style="display:none" ng-messages="userForm.limit.$error" ng-messages-include="messages.html" class="errors">
+		</div>
+		<input type="submit" name="save" value="Apply Filter" />
+	</form>
+
+	  
+	  
+	<form action = "/" method = "get" onsubmit="ClearCookie()">
+	<input type="submit" name="clear" value="Clear Filter" />
+	</form>
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular-messages.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+
+ <script type = "text/javascript">
+        
+            function WriteCookie()
+            {
+               if( document.myform.storename.value == "" ){
+                  alert("Enter some value!");
+                  return;
+               }
+               cookievalue= escape(document.myform.storename.value) + ";";
+			   cookievalue_1= escape(document.myform.limit.value) + ";";
+			   
+               document.cookie="storeName=" + cookievalue;
+			   document.cookie="showLimit=" + cookievalue_1;
+			   
+               //document.write ("Setting Cookies : " + "name=" + cookievalue );
+			   return;
+            }
+        
+</script>
+
+ <script type = "text/javascript">
+        
+            function ClearCookie()
+            {
+              // if( document.myform.storename.value != "" ){
+                  document.cookie="storeName=" + "";
+				  document.cookie="showLimit=" + "";
+                  return;
+               //}
+            }
+        
+</script>
+
+	  
+<script>
+        function CountryStateCityCtnl($scope) {
+            $scope.countries = {
+				'xWalker':{
+				},
+				
+                'Women': {
+                    'Accessories': {'Handbags':['Cross-Body Handbags','Hobo Handbags','Satchels','Shoulder Bags','Tote Handbags','Clutches & Special Occasion Bags','Bucket Bags','BackPacks'],'Jewelry':['Bracelets,Charms & Pendants','Cufflinks','Earrings','Necklaces','Diamonds','Rings'],'Watches':[],'Belt Buckles':[],'Belts':[],'Gloves & Mittens':[],'Hair Accessories':[],'Hats':[],'Scarves & Shawls':[],'Sunglasses':[]},
+                    'Clothing': {'Activewear':['Active Dresses','Active Jackets','Active Pants','Active Shirts','Active Shorts','Active Skirts','Active Tanks','Sweatshirts','Sports Bra'],'Dresses':['Day Dresses','Formal Dresses','Cocktail Dresses','Jumpsuits & Rompers','Casual Dresses'], 'Outerwear':['Coats & Jackets','Capes & Ponchos','Casual Jackets','Puffers','Trench Coats','Raincoats'],'Pants':['Casual Pants','Dress Pants','Leggings'],'Jeans':[],'Shirts & Tops':['Camisoles & Tank Tops','Polo Shirts','Shirts & Blouses','Sweaters & Cardigans','T-Shirts'],'Shorts':[],'Skirts':[],'Sleepwear & Loungewear':['Nightgowns','Pajamas','Robes'],'Swimwear':['Cover-Ups','One-Piece Swimsuits','Swimsuit Bottoms','Swimsuit Tops','Two-Piece Swimsuits'],'Bras & Panties':['Bras','Lingerie','Shapewear','Underwear'],'Hosiery and Socks':[]},
+                    'Shoes': {'Shoe Accessories':[], 'Athletic Shoes':['Cross Training Shoes','Running Shoes'], 'Clogs & Mules':[],'Flats':[],'Loafers':[],'Outdoor Shoes':[],'Oxford Shoes':[],'Pumps':['D\'orsay & Two-Piece Pumps'],'Slippers':[],'Sneakers':[],'Booties':[],'Outdoor Sandals':[],'Wedges':[],'Platform Sandals':[]},
+					'shoes':{'boots':[],'sandals':['slide-sandals','thongs-flip-flops']}
+                },
+                'Baby & Toddler': {
+                    'Baby Bathing': {},
+                    'Baby Health': {},
+                    'Baby Safety': {'Baby Monitors':[]},
+					'Baby Toys':{'Playmats':[]},
+					'Baby Transport':{'Baby & Toddler Car Seats':[],'Baby Stroller':[]},
+					'Baby Transport Accessories':{'Baby & Toddler Car Seat Accessories':[],'Baby Carrier Accessories':[],'Baby Stroller Accessories':[],'Shopping Cart & High Chair Covers':[]},
+					'Diapering':{'Changing Mats':[]},
+					'Nursing & Feeding':{'Baby & Toddler Bibs':[],'Baby Food':[],'Baby Bottles':[]},
+					'Baby & Toddler Clothing':{'Baby & Toddler Bottoms':[],'Baby & Toddler Dresses':[],'Baby & Toddler Outerwear':[],'Baby & Toddler Outfits':[],'Baby & Toddler Socks & Tights':[],'Baby & Toddler Swimwear':[],'Baby & Toddler Tops':[],'Baby Onesies':[],'Baby Sleepwear & Swaddlers':[]}
+                },
+                'Computer': {
+                    'Computer Accessories': {'Laptop Accessories':[]},
+                    'Handheld Devices': {'E-Book Readers':[]},
+					'Laptops':{},
+					'Tablet Computers':{},
+					'Chargers':{},
+					'Power Adapters':{},
+					'Print, Copy, Scan & Fax/Printers & Copiers':{}
+                },
+				'Electronics':{
+					'Audio':{'Headphones':[],'MP3 Players':[]},
+					'Communications':{'Mobile Phone Accessories':[],'Mobile Phones':[],'Satellite Phones':[]},
+					'Electronics Accessories':{}
+					
+				},
+				'Furniture':{
+					'Baby & Toddler Furniture':{'Bassinets':[],'Changing Tables':[],'High Chairs & Boosters':[],'Beds, Cribs & Cradles':[]},
+					'Bedroom Furniture':{'Armoires':[],'Bed Frames':[],'Dressers':[],'Headboards & Footboards':[],'Nightstands':[],'Storage Chests':[]},
+					'Benches':{},
+					'Chairs':{'Bar Stools':[],'Chaises':[],'Club Chairs':[],'Kitchen & Dining Room Chairs':[],'Living Room Chairs':[]},
+					'Desks & Tables':{'Desks':[],'Kitchen & Dining Room Tables':[],'Living Room Tables':[]},
+					'Kitchen & Dining Room Furniture':{'Buffets & Sideboards':[]},
+					'Living Room Furniture':{'Ottomans':[]},
+					'Outdoor Furniture':{},
+					'Shelving':{'Bookcases':[]},
+					'Sofas':{'Loveseats':[],'Sofabeds':[]},
+					'Vanities':{'Bathroom Vanities':[]},
+					'Wine Racks & Cellars':{'Wine Coolers':[]}
+				},
+				'Health & Beauty':{
+					'Jewelry Cleaning & Care':{'Jewelry Boxes':[],'Jewelry Cleaners':[]},
+					'Cosmetics':{'Bath & Body':{},'Cosmetic Tools':{},'Makeup':{},'Nail Care':{},'Perfume & Cologne':{},'Skin Care':{}},
+					'Hair Care':{'Combs & Brushes':{},'Hair Curler Clips & Pins':{},'Hair Curlers':{},'Hair Dryers':{},'Hair Irons':{},'Hair Shears':{},'Shampoo & Conditioner':{},'Styling Gel, Spray & Mousse':{}},
+					'Oral Care':{},
+					'Shaving & Grooming':{'Aftershave':{},'Razors & Razor Blades':{},'Shaving Brushes':{},'Shaving Cream':{}},
+					'Sleeping Aids':{'Sleep Masks':{},'Travel Pillows':{},'White Noise Machines':{}},
+					'Vision Care':{'Eye Glasses':{}}
+				},
+				'Toys & Games':{
+					'Games':{'Card Games':[]},
+					'Outdoor Play Equipment':{},
+					'Puzzles':{},
+					'Toys':{'Art & Drawing Toys':[],'Educational Toys':[],'Electronic Toys':[],'Dolls, Playsets & Toy Figures':[]}
+				},
+				'Sporting Goods':{
+					'Outdoor Recreation':{'Golf':[],'Cycling':[],'Fishing':[],'Camping, Backpacking & Hiking':[]},
+					'Water Sports':{'Swimming':[]},
+					'Exercise & Fitness':{},
+					'Racquet Sports':{}
+				},
+				'Home & Garden':{
+					'Bathroom Accessories':{'Bath Mats & Rugs':[]},
+					'Decor':{'Baskets':[],'Bird Feeders':[],'Birdhouses':[],'Bookends':[],'Candle Holders':[],'Candles':[],'Clocks':[],'Decorative Plates':[],'Figurines':[],'Home Fragrances':[],'Mirrors':[],'Picture Frames':[],'Rugs':[],'Seasonal & Holiday Decorations':[],'Seating & Sofa Cushions':[],'Shadow Boxes':[],'Slipcovers':[],'Throw Pillows':[],'Vases':[],'Weather Vanes & Roof Decor':[],'Wind Chimes':[]},
+					'Fire & Gas Safety':{'Fire Alarms':[]},
+					'Fireplaces & Wood Stoves':{'Fireplace Tools':[]},
+					'Household Appliances':{},
+					'Household Supplies':{'Household Cleaning Supplies':[],'Household Paper Products':[],'Shoe Care & Tools':[],'Storage & Organization':[]},
+					'Lawn & Garden':{'Gardening':[],'Outdoor Living':[]},
+					'Lighting':{'Lighting/Lamps':[]},
+					'Lighting Accessories':{'Lamp Shades':[]},
+					'Linens':{'Bedding':[],'Table Linens':[],'Towels':[]}
+				},
+				'Media':{
+					'Books':{'Fiction':[],'Non-Fiction':[],'Art Books':[],'Cooking Books':[],'Children\'s Books':[]}	
+				},
+				'Software':{
+					'Computer Software':{},
+					'Video Game Software':{}
+				},
+				'Office Supplies':{
+					'Filing & Organization':{'Calendars, Organizers & Planners':[]},
+					'General Supplies':{},
+					'Office Equipment':{}
+				},
+				'Men':{
+					'Accessories':{'Neckties':['Ascot Ties'],'Pocket Squares':[],'Watches':[],'Belts':[],'Hats':[],'Gloves':[],'Sunglasses':[],'Jewelry':['Cufflinks'],'Bowties':[],'Cufflinks':[],'Scarfs':[]},
+					'Clothing':{'Outerwear':['Coats & Jackets','Raincoats','Vests'],'Blazers':[],'Suits':['Pant Suits','Tuxedos','Suit Separates'],'Activewear':['Active Jackets','Active Pants','Active Shirts','Active Shorts','Active Tanks'],'Pants':[],'Jeans':[],'Shirts':[],'T-Shirts':[],'Sweaters':[],'Shorts':[],'Sleepwear & Loungewear':[],'Swimwear':['Swim Shorts'],'Traditional & Ceremonial Clothing':[],'Underwear & Socks':[],'Polo Shirts':[]},
+					'Shoes':{'Boots':[],'Athletic Shoes':[],'Loafers':[],'Sandals':['Thongs & Flip-Flops'],'Slippers':[],'Sneakers':[],'Outdoor Shoes':[],'Oxford Shoes':[],'Outdoor Sandals':[],'Flip Flops':[],'Driving Shoes':[]}
+				},
+				'Kitchen & Dining':{
+					'Bakeware':{},
+					'Bakeware Accessories':{},
+					'Barware':{},
+					'Cookware':{},
+					'Cookware Accessories':{},
+					'Food & Beverage Carriers':{},
+					'Food Storage':{},
+					'Kitchen Appliance Accessories':{},
+					'Kitchen Appliances':{},
+					'Kitchen Tools & Utensils':{},
+					'Tableware':{}
+				},
+				'Hardware':{
+					'Flooring':{'Carpets':[]},
+					'Tools':{}
+				},
+				'Luggage & Bags':{
+				},
+				'Eightylegs unmapped category':{
+				},
+				'Kids':{
+					'Girls':{'Accessories':[],'Clothing':[]},
+					'Boys':{'Accessories':[],'Clothing':[]}
+				},
+				'Gifts':{
+				},
+				'Pets':{
+					'Dogs':{}
+				}
+            };
+             $scope.GetSelectedCountry = function () {
+                $scope.strCountry = document.getElementById("country").value;
+            };
+            $scope.GetSelectedState = function () {
+                $scope.strState = document.getElementById("state").value;
+            };
+			 $scope.GetSelectedCity = function () {
+                $scope.strCity = document.getElementById("city").value;
+            };
+			
+        }
+    </script>
+<script type="text/javascript">
+function goImgWin(myImage,myWidth,myHeight,origLeft,origTop) {
+myHeight += 50;
+myWidth += 50;
+TheImgWin = window.open(myImage,'image','height=' +
+myHeight + ',width=' + myWidth +
+',toolbar=no,directories=no,status=no,' +
+'menubar=no,scrollbars=no,resizable=no');
+TheImgWin.moveTo(origLeft,origTop);
+TheImgWin.focus();
+}
+</script>
+
+
+<div class="CSSTableGenerator">
+<form action="/" method="post"> 
+    <table>
+		
+        <tr>
+			<th>Id</th>
+            <th>Category Name</th>
+			<th>Product Name</th>
+			<th>Store Name</th>
+			<th>Short Description</th>
+			<th>Product Image</th>
+			<th>Category</th>
+			<th>Add to values?</th>
+        </tr>
+	<% products.forEach(function(product) { %>
+        <tr>
+			<td><%= product.id %></td>
+            <td><%= product.category_name %></td>
+			<td><%= product.product_name %></td>
+			<td><%= product.store_name  %></td>
+			<td><%= product.short_description  %></td>
+			<td><a href="<%= product.product_image %>"  onclick="goImgWin('<%= product.product_image %>',240,302,100,50);return false;"><img src="<%= product.product_image %>" width="130" height="130" border="1"
+					alt="Product" class="left" /></a></td>
+			<td> <div ng-controller="CountryStateCityCtnl">
+        <div>
+            
+            <select name="statessource_<%= product.id %>" ng-model="statessource_<%= product.id %>" ng-options="country for (country, states) in countries"
+                ng-change="GetSelectedCountry()">
+                <option value=''></option>
+            </select>
+        </div>
+       
+        <div>
+           <select  ng-disabled="!statessource_<%= product.id %>" name="citiessource_<%= product.id %>" ng-model="citiessource_<%= product.id %>" ng-options="state for (state,city) in statessource_<%= product.id %>"
+                ng-change="GetSelectedState()"><option value=''></option>
+            </select>
+        </div>
+		
+		<div>
+            <select name="city_<%= product.id %>" ng-disabled="!citiessource_<%= product.id %> || !statessource_<%= product.id %>" ng-model="city_<%= product.id %>" ng-options="city for (city,area) in citiessource_<%= product.id %>"
+				ng-change="GetSelectedCity()"><option value=''></option>
+            </select>
+        </div>
+		
+		<div>
+            <select  name="area_<%= product.id %>" ng-disabled="!city_<%= product.id %> || !citiessource_<%= product.id %> || !statessource_<%= product.id %>" ng-model="area_<%= product.id %>"><option value=''>
+                </option>
+				<option ng-repeat="area in city_<%= product.id %>" value='{{area}}'>{{area}}</option>
+            </select>
+        </div>
+		
+    </div>
+			</td>
+			
+			<td>
+				<input type = "checkbox" name = "newTag_<%= product.id %>" ng-model = "newTag_<%= product.id %>">
+			</td>
+			
+        </tr>
+    <% }); %>
+    </table>
+	<input type="submit" name="submit" value="Submit" />
+	</form>
+ </div>
+     
+    
+	
+	
+	</body>
+</html>
