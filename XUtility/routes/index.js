@@ -127,6 +127,7 @@ for(var cookieName in cookieSet){
 			}
 			
 			product_url = category_hierarchy_1 + '/' + product_name + '/' + sku + '.html';
+			product_url = product_url.toLowerCase();
 			console.log("product_url: "+ product_url);
 			
 			console.log("cat hirarchy: "+category_hierarchy);

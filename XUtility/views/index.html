@@ -3,7 +3,7 @@
 		<title>XWalker</title>
 		<link rel="stylesheet" type="text/css" href="css/tablestyle.css">
 		</head>
-	<body>
+	<body onload="startup()">
 		<h2>Welcome to XWalker portal</h2>
 		<h2></h2>
 	
@@ -48,6 +48,20 @@
                document.cookie="storeValue=" + cookievalue; 
 			   document.cookie="showLimit=" + cookievalue_1;
 			   return;
+            }
+        
+</script>
+<script type = "text/javascript">
+        
+            function startup()
+            {
+			  var cookie_string = document.cookie ;
+			  if (cookie_string.length != 0) {
+				var cookie_value = cookie_string.match ( '(^|;)[\s]*' + "storeValue" + '=([^;]*)' );
+				document.myform.storeList.value = decodeURIComponent ( cookie_value[2] ) ;
+			  }
+			  return '' ;
+			   
             }
         
 </script>
