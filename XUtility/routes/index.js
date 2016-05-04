@@ -2,7 +2,7 @@ var express = require('express');
 var cookieParser = require('cookie-parser');
 var router = express.Router();
 var mongoose = require('mongoose');
-var bodyParser = require('body-parser'); 
+var bodyParser = require('body-parser');
 var Promise = require('bluebird');
 var replace = require("str-replace");
 var storage = require('node-persist');
@@ -18,16 +18,14 @@ var collectionOne = [];
 
 storage.initSync();
 
-
-	
 router.get('/', function (req, res) {
-	
+
 	displayData(req, res);
-	
+
 });
 
 router.post('/', function (req, res) {
-	
+
 	var associativeArray = new Object();
 	var ass = [];
 	var conn = mongoose.connection;
@@ -36,8 +34,8 @@ router.post('/', function (req, res) {
 	var cookieSet;
 	cookieSet = req.cookies;
 	console.log("iN post All Cookies :  ", cookieSet);
-	
-	
+
+
 for(var cookieName in cookieSet){
 		if(cookieName == 'storeValue'){
 			storage.setItem('limit',cookieSet[cookieName]);
@@ -47,7 +45,7 @@ for(var cookieName in cookieSet){
 			storage.setItem('limit',cookieSet[cookieName]);
 			console.log("limit :     "+storage.getItem('limit'));
 		}
-		
+
 	}
 
 	if(storage.getItem('storeValue') == ""){
@@ -57,18 +55,18 @@ for(var cookieName in cookieSet){
 			var lim = parseInt(storage.getItem('limit'));
 			allprodsArray_1 = error_imports.find({"store_name":storage.getItem('storeValue')}).limit(lim);
 		}
-	
+
 	allprodsArray_1.exec(function(){})
 	.then(function(prods1){
 		prods1.forEach(function(prod1){
 			var selectedCategory = '';
 			var id = prod1._id;
-				suffix_1 = 'statessource_' + id;
-				suffix_2 = 'citiessource_' + id;
-				suffix_3 = 'city_' + id;
-				suffix_4 = 'area_' + id;
+				suffix_1 = 'mainCategory_' + id;
+				suffix_2 = 'primaryCategory_' + id;
+				suffix_3 = 'secondaryCategory_' + id;
+				suffix_4 = 'subCategory_' + id;
 				suffix_5 = 'newTag_' + id;
-		
+
 			if(req.body[suffix_1]!=null && req.body[suffix_1]!='' && req.body[suffix_1]!=undefined){
 				selectedCategory = selectedCategory +'/'+ req.body[suffix_1];
 				if(req.body[suffix_2]!=null && req.body[suffix_2]!='' && req.body[suffix_2]!=undefined){
@@ -80,7 +78,7 @@ for(var cookieName in cookieSet){
 						}
 					}
 			}
-			
+
 			console.log("Selected cat before append : "+ selectedCategory);
 				if(selectedCategory && req.body[suffix_5]!=undefined){
 					console.log("In if");
@@ -89,7 +87,7 @@ for(var cookieName in cookieSet){
 				else if(req.body[suffix_5]==undefined){
 					console.log("In else");
 					associativeArray[id] = selectedCategory + '|' + prod1.category_hierarchy + '|' + prod1.product_name + '|' + prod1.sku_number;
-				}	
+				}
 				console.log("Final final string: "+associativeArray[id]);
 			}
 		});
@@ -105,9 +103,9 @@ for(var cookieName in cookieSet){
 			sku,
 			product_url;
 		for(var name in assoArray){
-			
+
 			combinedStringArray = assoArray[name].split("|");
-			
+
 			if((combinedStringArray.length) - 1 == 4)
 			{
 				selected_category = combinedStringArray[0];
@@ -125,39 +123,39 @@ for(var cookieName in cookieSet){
 				product_name = combinedStringArray[2].replace(/[^A-Z0-9]+/ig, "-");
 				sku = combinedStringArray[3];
 			}
-			
+
 			product_url = category_hierarchy_1 + '/' + product_name + '/' + sku + '.html';
 			product_url = product_url.toLowerCase();
 			console.log("product_url: "+ product_url);
-			
+
 			console.log("cat hirarchy: "+category_hierarchy);
             promiseArray.push({prodid:name,category:selected_category,category_hierarchy:category_hierarchy,selected_category:selected_category,product_url:product_url});
 			tempPromiseArray.push({prodid:name,category:selected_category,category_hierarchy:category_hierarchy,selected_category:selected_category,product_url:product_url});
-			
+
        }
-	   
+
 	   		tempPromiseArray.forEach(function(doc){
 			if(doc.category_hierarchy!= undefined){
 				console.log("Updating magento categories!!!  "+ doc.category_hierarchy);
-				
+
 				var tempStr = doc.category;
-				
+
 				var cursor = conn.collection('magento_categories').find({"categories":tempStr});
 
 				conn.collection('magento_categories').find({"categories":tempStr}).snapshot().forEach( function (record) {
 					if(record.values == "" || record.values == undefined){
-						record.values = doc.category_hierarchy; 
+						record.values = doc.category_hierarchy;
 					}
 					else{
 						record.values = record.values +" | "+doc.category_hierarchy;
 					}
-					
-					conn.collection('magento_categories').save(record); 
+
+					conn.collection('magento_categories').save(record);
 				});
 			}
 		});
-		
-		
+
+
 		Promise.map(promiseArray, function(singleObj) {
 				return magento_categories.find({"categories":singleObj.category}).exec(function(err,rescat){
 					if(err)
@@ -174,25 +172,25 @@ for(var cookieName in cookieSet){
 				console.log("Product url from array: "+sss.product_url);
 				var o_id = new MongoClient.ObjectID(sss.prodid);
 				console.log("product_url::::::::::: "+sss.product_url);
-				
+
 				var newCatHirarchy = replace.all( "/" ).ignoringCase().from(sss.selected_category).with( ">" );
-				
+
 				newCatHirarchy = newCatHirarchy.replace(">","");
 				console.log("newCatHirarchy:: "+newCatHirarchy);
-				
-				
+
+
 				var newCatName = replace.all( "/" ).ignoringCase().from(sss.selected_category).with( " " );
 				newCatName = newCatName.replace(" ","");
-				
-				
-				
+
+
+
 				conn.collection('error_import').findAndModify({_id:o_id},[['_id',1]],{ $set: {"product_category_ids":sss.category,"product_url":sss.product_url}},{new:true},function(err,result) {
-					if ( err ) 
+					if ( err )
 						console.warn(err);
 					else{
-						
+
 						conn.collection('product_import').insert({"tags":result.value.tags + " " + newCatName,
-										
+
 										"category_hierarchy":newCatHirarchy,
 										"wildcard":result.value.wildcard,
 										"import_type":result.value.import_type,
@@ -220,7 +218,7 @@ for(var cookieName in cookieSet){
 										"merchant_id":result.value.merchant_id,
 										"product_url":result.value.product_url,
 										"product_category_ids":result.value.product_category_ids});
-										
+
 						var objid = new MongoClient.ObjectID(result.value._id);
 						conn.collection('error_import').deleteOne({"_id":objid});
 						}
@@ -239,15 +237,16 @@ for(var cookieName in cookieSet){
        }
        return _Array;
 	}
-	
+
 function displayData(req, res){
-	
+
 	var allprodsArray;
-		
+	var allStores;
+	var allStoreArray = [];
 	var cookieSet;
 	cookieSet = req.cookies;
 	console.log("iN GET All Cookies :  ", cookieSet);
-	
+
 	for(var cookieName in cookieSet){
 		if (cookieName == 'storeValue'){
 			storage.setItem('storeValue',cookieSet[cookieName]);
@@ -258,8 +257,8 @@ function displayData(req, res){
 			console.log("limit :     "+storage.getItem('limit'));
 		}
 
-	}	
-		
+	}
+
 		if(storage.getItem('storeValue') == ""){
 			allprodsArray = error_imports.find().limit(10);
 		}
@@ -268,9 +267,15 @@ function displayData(req, res){
 			allprodsArray = error_imports.find({"store_name":storage.getItem('storeValue')}).limit(lim);
 		}
 		
+		error_imports.find().distinct('store_name', function(error, stores) {
+		   //allStoreArray = stores.split(",");
+		   console.log("Storesssss:  "+stores);
+		});
+		
+
 		var allproducts = [];
 		var products = [];
-		
+
 		allprodsArray.exec(function(err,prods){
 		if(err)
 			return console.log(err);
@@ -305,7 +310,7 @@ function displayData(req, res){
 
 			allproducts.push(elem);
 			pro = allproducts;
-			
+
 		});
 	res.render('index.html',{products:pro});
 	});

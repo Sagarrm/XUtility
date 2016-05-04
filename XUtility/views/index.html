@@ -82,8 +82,8 @@
 
 	  
 <script>
-        function CountryStateCityCtnl($scope) {
-            $scope.countries = {
+        function ProductCategoriesCtnl($scope) {
+            $scope.categories = {
 				'xWalker':{
 				},
 				
@@ -214,14 +214,14 @@
 					'Dogs':{}
 				}
             };
-             $scope.GetSelectedCountry = function () {
-                $scope.strCountry = document.getElementById("country").value;
+             $scope.GetSelectedPrimaryCategory = function () {
+                $scope.strPrimaryCategory = document.getElementById("PrimaryCategory").value;
             };
-            $scope.GetSelectedState = function () {
-                $scope.strState = document.getElementById("state").value;
+            $scope.GetSelectedSecondaryCategory = function () {
+                $scope.strSecondaryCategory = document.getElementById("SecondaryCategory").value;
             };
-			 $scope.GetSelectedCity = function () {
-                $scope.strCity = document.getElementById("city").value;
+			 $scope.GetSelectedSubCategory = function () {
+                $scope.strSubCategory = document.getElementById("SubCategory").value;
             };
 			
         }
@@ -263,31 +263,31 @@ TheImgWin.focus();
 			<td><%= product.short_description  %></td>
 			<td><a href="<%= product.product_image %>"  onclick="goImgWin('<%= product.product_image %>',240,302,100,50);return false;"><img src="<%= product.product_image %>" width="130" height="130" border="1"
 					alt="Product" class="left" /></a></td>
-			<td> <div ng-controller="CountryStateCityCtnl">
+			<td> <div ng-controller="ProductCategoriesCtnl">
         <div>
             
-            <select name="statessource_<%= product.id %>" ng-model="statessource_<%= product.id %>" ng-options="country for (country, states) in countries"
-                ng-change="GetSelectedCountry()">
+            <select name="mainCategory_<%= product.id %>" ng-model="mainCategory_<%= product.id %>" ng-options="PrimaryCategory for (PrimaryCategory, cats) in categories"
+                ng-change="GetSelectedPrimaryCategory()">
                 <option value=''></option>
             </select>
         </div>
        
         <div>
-           <select  ng-disabled="!statessource_<%= product.id %>" name="citiessource_<%= product.id %>" ng-model="citiessource_<%= product.id %>" ng-options="state for (state,city) in statessource_<%= product.id %>"
-                ng-change="GetSelectedState()"><option value=''></option>
+           <select  ng-disabled="!mainCategory_<%= product.id %>" name="primaryCategory_<%= product.id %>" ng-model="primaryCategory_<%= product.id %>" ng-options="SecondaryCategory for (SecondaryCategory,SubCategory) in mainCategory_<%= product.id %>"
+                ng-change="GetSelectedSecondaryCategory()"><option value=''></option>
             </select>
         </div>
 		
 		<div>
-            <select name="city_<%= product.id %>" ng-disabled="!citiessource_<%= product.id %> || !statessource_<%= product.id %>" ng-model="city_<%= product.id %>" ng-options="city for (city,area) in citiessource_<%= product.id %>"
-				ng-change="GetSelectedCity()"><option value=''></option>
+            <select name="secondaryCategory_<%= product.id %>" ng-disabled="!primaryCategory_<%= product.id %> || !mainCategory_<%= product.id %>" ng-model="secondaryCategory_<%= product.id %>" ng-options="SubCategory for (SubCategory,SubCat) in primaryCategory_<%= product.id %>"
+				ng-change="GetSelectedSubCategory()"><option value=''></option>
             </select>
         </div>
 		
 		<div>
-            <select  name="area_<%= product.id %>" ng-disabled="!city_<%= product.id %> || !citiessource_<%= product.id %> || !statessource_<%= product.id %>" ng-model="area_<%= product.id %>"><option value=''>
+            <select  name="subCategory_<%= product.id %>" ng-disabled="!secondaryCategory_<%= product.id %> || !primaryCategory_<%= product.id %> || !mainCategory_<%= product.id %>" ng-model="subCategory_<%= product.id %>"><option value=''>
                 </option>
-				<option ng-repeat="area in city_<%= product.id %>" value='{{area}}'>{{area}}</option>
+				<option ng-repeat="SubCat in secondaryCategory_<%= product.id %>" value='{{SubCat}}'>{{SubCat}}</option>
             </select>
         </div>
 		
