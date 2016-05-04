@@ -226,7 +226,7 @@ for(var cookieName in cookieSet){
 			})
 			setTimeout(function() {
 				displayData(req, res);
-					}, 2000);
+			}, 1000);
 		});
 	})
 	})
@@ -266,15 +266,10 @@ function displayData(req, res){
 			var lim = parseInt(storage.getItem('limit'));
 			allprodsArray = error_imports.find({"store_name":storage.getItem('storeValue')}).limit(lim);
 		}
-		
-		error_imports.find().distinct('store_name', function(error, stores) {
-		   //allStoreArray = stores.split(",");
-		   console.log("Storesssss:  "+stores);
-		});
-		
 
 		var allproducts = [];
 		var products = [];
+		var strs = [];
 
 		allprodsArray.exec(function(err,prods){
 		if(err)
@@ -312,7 +307,20 @@ function displayData(req, res){
 			pro = allproducts;
 
 		});
-	res.render('index.html',{products:pro});
+
 	});
+
+var sttrs;
+	error_imports.find().distinct('store_name', function(error, stores) {
+		 //allStoreArray = stores.split(",");
+		console.log("@@@@@@@ "+stores[0]);
+	//   console.log("Storesssss:  "+stores);
+	sttrs = stores;
+		console.log("####### "+sttrs);
+	});
+
+	setTimeout(function() {
+		res.render('index.html',{products:pro,strs:sttrs});
+	}, 2000);
 	}
 module.exports = router;
