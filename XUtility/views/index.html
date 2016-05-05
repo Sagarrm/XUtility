@@ -6,31 +6,32 @@
 	<body onload="startup()">
 		<h2>Welcome to XWalker portal</h2>
 		<h2></h2>
-
+	
 	<form name="myform" action = "/" method = "post" onsubmit="WriteCookie()">
 		Store Name:<select id="storeList" required>
 			<option value=""></option>
 			<% strs.forEach(function(str) { %>
-					<option value="<%= str %>"><%= str%></option>;
+				<option value="<%= str %>"><%= str%></option>;
 			<% }); %>
-<!--			<script>
+			<!--<script>
 				var myArray = new Array("AllSaints","L.K. Bennett","PetSmart","Pacific Coast","Johnston & Murphy","Planet Blue","Michael Stars","Only Natural Pet","Road Runner Sports","Orvis","Tibi","Lenox","James Perse","iRobot","Three Dots","Revolve Clothing","Ernest Alexander","Swim Spot","Golf smith","Thomas Pink","Ted Baker","Neiman Marcus","Sorel","Reeds Jewelers","Free People","Stance","Veronica Beard","Pet Street Mall","Parker","Carolina Rustica","Saks Fifth Avenue","Fila","Pet Fancy","Ashley Furniture","Pet Care Choice","Bloomingdale's","Vince Camuto","NIC ZOE","Paper Source","TouchOfModern","Columbia Sportswear","Casadei","SSENSE","Billabong","Brookstone","Burke Decor","Bare Necessities","The Body Shop","Vera Bradley","Karen Millen","Macy's","7 For All Mankind","SpaceNK","Splendid","PUMA","Peace Love World| LLC","Hartford York","JAG","Design Within Reach","Donald J Pliner","Hampden Clothing","ExOfficio","Andrew Marc","Best Home Fashion Inc","Ashbury Skies","Le Creuset","LAmade Clothing","SCOOP NYC","Lulus","Sun and Ski","Kirna Zabete","Modell's Sporting Goods","Palm Beach Perfumes","Buxton Co.","Algenist","Alyaka","Black Halo","Blnts","Carole Hochman - Luxurious Lingerie","Cole Haan","Coordinates Collection","Cosabella","Crane & Co","D.L. and Co.","Durango Boots","Derek Lam","Dolce Vita","Draper James","Effy Jewelry","Fidelity Denim","French Connection","Haggar","Inhabit NY","Ink Garden","JOE'S","John Varvatos","Kate Somerville","Ledbury","OnGossamer - Luxurious| Sensual| Hip","Tailor Vintage","Volcom","KNOMOBags USA","Hudson Jeans","Citizens of Humanity");
-				for(i=0; i<myArray.length; i++) {
+				for(i=0; i<myArray.length; i++) {  
 					document.write('<option value="' + myArray[i] +'">' + myArray[i] + '</option>');
 				}
-			</script>-->
+			</script>
+			-->
 		</select>
 		<div style="display:none" ng-messages="userForm.storeList.$error" ng-messages-include="messages.html" class="errors">
 		</div>
 		Limit: <input id = "limit" name = "limit" type = "text" ng-model= "limit" value="" required>
 		<div style="display:none" ng-messages="userForm.limit.$error" ng-messages-include="messages.html" class="errors">
 		</div>
-
+		
 		<input type="submit" name="save" value="Apply Filter" />
 	</form>
 
-
-
+	  
+	  
 	<form action = "/" method = "get" onsubmit="ClearCookie()">
 	<input type="submit" name="clear" value="Clear Filter" />
 	</form>
@@ -38,7 +39,7 @@
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
 
  <script type = "text/javascript">
-
+        
             function WriteCookie()
             {
                if( document.myform.storeList.value == "" ){
@@ -47,15 +48,15 @@
                }
                cookievalue= escape(document.myform.storeList.value) + ";";
 			   cookievalue_1= escape(document.myform.limit.value) + ";";
-
-               document.cookie="storeValue=" + cookievalue;
+			   
+               document.cookie="storeValue=" + cookievalue; 
 			   document.cookie="showLimit=" + cookievalue_1;
 			   return;
             }
-
+        
 </script>
 <script type = "text/javascript">
-
+        
             function startup()
             {
 			  var cookie_string = document.cookie ;
@@ -64,32 +65,32 @@
 				document.myform.storeList.value = decodeURIComponent ( cookie_value[2] ) ;
 			  }
 			  return '' ;
-
+			   
             }
-
+        
 </script>
 
  <script type = "text/javascript">
-
+        
             function ClearCookie()
             {
                   document.cookie="storeValue=" + "";
 				  document.cookie="showLimit=" + "";
-
+				  
                   return;
             }
-
+        
 </script>
 
 
 
-
+	  
 <script>
         function ProductCategoriesCtnl($scope) {
             $scope.categories = {
 				'xWalker':{
 				},
-
+				
                 'Women': {
                     'Accessories': {'Handbags':['Cross-Body Handbags','Hobo Handbags','Satchels','Shoulder Bags','Tote Handbags','Clutches & Special Occasion Bags','Bucket Bags','BackPacks'],'Jewelry':['Bracelets,Charms & Pendants','Cufflinks','Earrings','Necklaces','Diamonds','Rings'],'Watches':[],'Belt Buckles':[],'Belts':[],'Gloves & Mittens':[],'Hair Accessories':[],'Hats':[],'Scarves & Shawls':[],'Sunglasses':[]},
                     'Clothing': {'Activewear':['Active Dresses','Active Jackets','Active Pants','Active Shirts','Active Shorts','Active Skirts','Active Tanks','Sweatshirts','Sports Bra'],'Dresses':['Day Dresses','Formal Dresses','Cocktail Dresses','Jumpsuits & Rompers','Casual Dresses'], 'Outerwear':['Coats & Jackets','Capes & Ponchos','Casual Jackets','Puffers','Trench Coats','Raincoats'],'Pants':['Casual Pants','Dress Pants','Leggings'],'Jeans':[],'Shirts & Tops':['Camisoles & Tank Tops','Polo Shirts','Shirts & Blouses','Sweaters & Cardigans','T-Shirts'],'Shorts':[],'Skirts':[],'Sleepwear & Loungewear':['Nightgowns','Pajamas','Robes'],'Swimwear':['Cover-Ups','One-Piece Swimsuits','Swimsuit Bottoms','Swimsuit Tops','Two-Piece Swimsuits'],'Bras & Panties':['Bras','Lingerie','Shapewear','Underwear'],'Hosiery and Socks':[]},
@@ -120,7 +121,7 @@
 					'Audio':{'Headphones':[],'MP3 Players':[]},
 					'Communications':{'Mobile Phone Accessories':[],'Mobile Phones':[],'Satellite Phones':[]},
 					'Electronics Accessories':{}
-
+					
 				},
 				'Furniture':{
 					'Baby & Toddler Furniture':{'Bassinets':[],'Changing Tables':[],'High Chairs & Boosters':[],'Beds, Cribs & Cradles':[]},
@@ -170,7 +171,7 @@
 					'Linens':{'Bedding':[],'Table Linens':[],'Towels':[]}
 				},
 				'Media':{
-					'Books':{'Fiction':[],'Non-Fiction':[],'Art Books':[],'Cooking Books':[],'Children\'s Books':[]}
+					'Books':{'Fiction':[],'Non-Fiction':[],'Art Books':[],'Cooking Books':[],'Children\'s Books':[]}	
 				},
 				'Software':{
 					'Computer Software':{},
@@ -226,7 +227,7 @@
 			 $scope.GetSelectedSubCategory = function () {
                 $scope.strSubCategory = document.getElementById("SubCategory").value;
             };
-
+			
         }
     </script>
 <script type="text/javascript">
@@ -244,9 +245,9 @@ TheImgWin.focus();
 
 
 <div class="CSSTableGenerator">
-<form action="/" method="post">
+<form action="/" method="post"> 
     <table>
-
+		
         <tr>
 			<th>Id</th>
             <th>Category Name</th>
@@ -255,7 +256,7 @@ TheImgWin.focus();
 			<th>Short Description</th>
 			<th>Product Image</th>
 			<th>Category</th>
-	<!--		<th>Add to values?</th>-->
+		<!--	<th>Add to values?</th>-->
         </tr>
 	<% products.forEach(function(product) { %>
         <tr>
@@ -268,48 +269,49 @@ TheImgWin.focus();
 					alt="Product" class="left" /></a></td>
 			<td> <div ng-controller="ProductCategoriesCtnl">
         <div>
-
+            
             <select name="mainCategory_<%= product.id %>" ng-model="mainCategory_<%= product.id %>" ng-options="PrimaryCategory for (PrimaryCategory, cats) in categories"
                 ng-change="GetSelectedPrimaryCategory()">
                 <option value=''></option>
             </select>
         </div>
-
+       
         <div>
            <select  ng-disabled="!mainCategory_<%= product.id %>" name="primaryCategory_<%= product.id %>" ng-model="primaryCategory_<%= product.id %>" ng-options="SecondaryCategory for (SecondaryCategory,SubCategory) in mainCategory_<%= product.id %>"
                 ng-change="GetSelectedSecondaryCategory()"><option value=''></option>
             </select>
         </div>
-
+		
 		<div>
             <select name="secondaryCategory_<%= product.id %>" ng-disabled="!primaryCategory_<%= product.id %> || !mainCategory_<%= product.id %>" ng-model="secondaryCategory_<%= product.id %>" ng-options="SubCategory for (SubCategory,SubCat) in primaryCategory_<%= product.id %>"
 				ng-change="GetSelectedSubCategory()"><option value=''></option>
             </select>
         </div>
-
+		
 		<div>
             <select  name="subCategory_<%= product.id %>" ng-disabled="!secondaryCategory_<%= product.id %> || !primaryCategory_<%= product.id %> || !mainCategory_<%= product.id %>" ng-model="subCategory_<%= product.id %>"><option value=''>
                 </option>
 				<option ng-repeat="SubCat in secondaryCategory_<%= product.id %>" value='{{SubCat}}'>{{SubCat}}</option>
             </select>
         </div>
-
+		
     </div>
 			</td>
-
+			
 		<!--	<td>
 				<input type = "checkbox" name = "newTag_<%= product.id %>" ng-model = "newTag_<%= product.id %>">
 			</td>
-		-->
+			-->
+			
         </tr>
     <% }); %>
     </table>
 	<input type="submit" name="submit" value="Submit" />
 	</form>
  </div>
-
-
-
-
+     
+    
+	
+	
 	</body>
 </html>

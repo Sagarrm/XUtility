@@ -37,24 +37,19 @@ router.post('/', function (req, res) {
 
 
 for(var cookieName in cookieSet){
+
 		if(cookieName == 'storeValue'){
-			storage.setItem('limit',cookieSet[cookieName]);
-			console.log("storeValue :     "+storage.getItem('storeValue'));
+			if(cookieSet[cookieName] == ""){
+				allprodsArray_1 = error_imports.find().limit(10);
+			}
+			else{
+				//allprodsArray_1 = error_imports.find({"store_name":cookieSet[cookieName]}).limit(10);
+				var lim = parseInt(cookieSet['showLimit']);
+				allprodsArray_1 = error_imports.find({"store_name":cookieSet[cookieName]}).limit(lim);
+			}
+		
 		}
-		else if(cookieName == 'showLimit'){
-			storage.setItem('limit',cookieSet[cookieName]);
-			console.log("limit :     "+storage.getItem('limit'));
-		}
-
 	}
-
-	if(storage.getItem('storeValue') == ""){
-			allprodsArray_1 = error_imports.find().limit(10);
-		}
-		else {
-			var lim = parseInt(storage.getItem('limit'));
-			allprodsArray_1 = error_imports.find({"store_name":storage.getItem('storeValue')}).limit(lim);
-		}
 
 	allprodsArray_1.exec(function(){})
 	.then(function(prods1){
@@ -226,7 +221,7 @@ for(var cookieName in cookieSet){
 			})
 			setTimeout(function() {
 				displayData(req, res);
-			}, 1000);
+					}, 2000);
 		});
 	})
 	})
@@ -248,28 +243,21 @@ function displayData(req, res){
 	console.log("iN GET All Cookies :  ", cookieSet);
 
 	for(var cookieName in cookieSet){
-		if (cookieName == 'storeValue'){
-			storage.setItem('storeValue',cookieSet[cookieName]);
-			console.log("storeValue :     "+storage.getItem('storeValue'));
+		if(cookieName == 'storeValue'){
+			if(cookieSet[cookieName] == ""){
+				allprodsArray = error_imports.find().limit(10);
+			}
+			else{
+				
+				//allprodsArray = error_imports.find({"store_name":cookieSet[cookieName]}).limit(10);
+				var lim = parseInt(cookieSet['showLimit']);
+				allprodsArray = error_imports.find({"store_name":cookieSet[cookieName]}).limit(lim);
+			}
 		}
-		else if(cookieName == 'showLimit'){
-			storage.setItem('limit',cookieSet[cookieName]);
-			console.log("limit :     "+storage.getItem('limit'));
-		}
-
 	}
-
-		if(storage.getItem('storeValue') == ""){
-			allprodsArray = error_imports.find().limit(10);
-		}
-		else {
-			var lim = parseInt(storage.getItem('limit'));
-			allprodsArray = error_imports.find({"store_name":storage.getItem('storeValue')}).limit(lim);
-		}
 
 		var allproducts = [];
 		var products = [];
-		var strs = [];
 
 		allprodsArray.exec(function(err,prods){
 		if(err)
@@ -307,20 +295,22 @@ function displayData(req, res){
 			pro = allproducts;
 
 		});
-
+	//res.render('index.html',{products:pro});
 	});
-
-var sttrs;
+	
+		var sttrs;
 	error_imports.find().distinct('store_name', function(error, stores) {
 		 //allStoreArray = stores.split(",");
 		console.log("@@@@@@@ "+stores[0]);
 	//   console.log("Storesssss:  "+stores);
 	sttrs = stores;
 		console.log("####### "+sttrs);
+		console.log("No of stores: "+sttrs.length);
 	});
 
 	setTimeout(function() {
 		res.render('index.html',{products:pro,strs:sttrs});
 	}, 2000);
+	
 	}
 module.exports = router;
