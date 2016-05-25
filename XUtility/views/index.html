@@ -26,15 +26,18 @@
 		Limit: <input id = "limit" name = "limit" type = "text" ng-model= "limit" value="" required>
 		<div style="display:none" ng-messages="userForm.limit.$error" ng-messages-include="messages.html" class="errors">
 		</div>
-		
-		<input type="submit" name="save" value="Apply Filter" />
+		Total Products : <%= totalNoOfProds %>
+		&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="save" value="Apply Filter" />
+		<input type="hidden" id="refreshed" value="no">
 	</form>
-
+	
+	
 	  
 	  
 	<form action = "/" method = "get" onsubmit="ClearCookie()">
 	<input type="submit" name="clear" value="Clear Filter" />
 	</form>
+
 	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular-messages.js"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
 
@@ -57,7 +60,7 @@
 </script>
 <script type = "text/javascript">
         
-            function startup()
+        /*    function startup()
             {
 			  var cookie_string = document.cookie ;
 			  if (cookie_string.length != 0) {
@@ -65,11 +68,30 @@
 				document.myform.storeList.value = decodeURIComponent ( cookie_value[2] ) ;
 			  }
 			  return '' ;
-			   
             }
-        
-</script>
+        */
+		document.myform.storeList.value = rxReadCookie("storeValue");
+		document.myform.limit.value = rxReadCookie("showLimit");
 
+		function rxReadCookie(cName)
+		{
+		 var rslt=new RegExp(cName+"=([^;]+)\\;?", "i").exec(document.cookie?unescape(document.cookie):"");
+		  
+		 return rslt ? rslt[1] : "";
+		}
+  
+</script>
+<script>
+function getCookie(name){
+    var pattern = RegExp(name + "=.[^;]*")
+    matched = document.cookie.match(pattern)
+    if(matched){
+        var cookie = matched[0].split('=')
+        return cookie[1]
+    }
+    return false
+}
+</script>
  <script type = "text/javascript">
         
             function ClearCookie()
@@ -87,26 +109,12 @@
 	  
 <script>
         function ProductCategoriesCtnl($scope) {
-            $scope.categories = {
-				'xWalker':{
-				},
-				
+            $scope.categories = {				
                 'Women': {
                     'Accessories': {'Handbags':['Cross-Body Handbags','Hobo Handbags','Satchels','Shoulder Bags','Tote Handbags','Clutches & Special Occasion Bags','Bucket Bags','BackPacks'],'Jewelry':['Bracelets,Charms & Pendants','Cufflinks','Earrings','Necklaces','Diamonds','Rings'],'Watches':[],'Belt Buckles':[],'Belts':[],'Gloves & Mittens':[],'Hair Accessories':[],'Hats':[],'Scarves & Shawls':[],'Sunglasses':[]},
                     'Clothing': {'Activewear':['Active Dresses','Active Jackets','Active Pants','Active Shirts','Active Shorts','Active Skirts','Active Tanks','Sweatshirts','Sports Bra'],'Dresses':['Day Dresses','Formal Dresses','Cocktail Dresses','Jumpsuits & Rompers','Casual Dresses'], 'Outerwear':['Coats & Jackets','Capes & Ponchos','Casual Jackets','Puffers','Trench Coats','Raincoats'],'Pants':['Casual Pants','Dress Pants','Leggings'],'Jeans':[],'Shirts & Tops':['Camisoles & Tank Tops','Polo Shirts','Shirts & Blouses','Sweaters & Cardigans','T-Shirts'],'Shorts':[],'Skirts':[],'Sleepwear & Loungewear':['Nightgowns','Pajamas','Robes'],'Swimwear':['Cover-Ups','One-Piece Swimsuits','Swimsuit Bottoms','Swimsuit Tops','Two-Piece Swimsuits'],'Bras & Panties':['Bras','Lingerie','Shapewear','Underwear'],'Hosiery and Socks':[]},
                     'Shoes': {'Shoe Accessories':[], 'Athletic Shoes':['Cross Training Shoes','Running Shoes'], 'Clogs & Mules':[],'Flats':[],'Loafers':[],'Outdoor Shoes':[],'Oxford Shoes':[],'Pumps':['D\'orsay & Two-Piece Pumps'],'Slippers':[],'Sneakers':[],'Booties':[],'Outdoor Sandals':[],'Wedges':[],'Platform Sandals':[]},
 					'shoes':{'boots':[],'sandals':['slide-sandals','thongs-flip-flops']}
-                },
-                'Baby & Toddler': {
-                    'Baby Bathing': {},
-                    'Baby Health': {},
-                    'Baby Safety': {'Baby Monitors':[]},
-					'Baby Toys':{'Playmats':[]},
-					'Baby Transport':{'Baby & Toddler Car Seats':[],'Baby Stroller':[]},
-					'Baby Transport Accessories':{'Baby & Toddler Car Seat Accessories':[],'Baby Carrier Accessories':[],'Baby Stroller Accessories':[],'Shopping Cart & High Chair Covers':[]},
-					'Diapering':{'Changing Mats':[]},
-					'Nursing & Feeding':{'Baby & Toddler Bibs':[],'Baby Food':[],'Baby Bottles':[]},
-					'Baby & Toddler Clothing':{'Baby & Toddler Bottoms':[],'Baby & Toddler Dresses':[],'Baby & Toddler Outerwear':[],'Baby & Toddler Outfits':[],'Baby & Toddler Socks & Tights':[],'Baby & Toddler Swimwear':[],'Baby & Toddler Tops':[],'Baby Onesies':[],'Baby Sleepwear & Swaddlers':[]}
                 },
                 'Computer': {
                     'Computer Accessories': {'Laptop Accessories':[]},
@@ -146,18 +154,6 @@
 					'Sleeping Aids':{'Sleep Masks':{},'Travel Pillows':{},'White Noise Machines':{}},
 					'Vision Care':{'Eye Glasses':{}}
 				},
-				'Toys & Games':{
-					'Games':{'Card Games':[]},
-					'Outdoor Play Equipment':{},
-					'Puzzles':{},
-					'Toys':{'Art & Drawing Toys':[],'Educational Toys':[],'Electronic Toys':[],'Dolls, Playsets & Toy Figures':[]}
-				},
-				'Sporting Goods':{
-					'Outdoor Recreation':{'Golf':[],'Cycling':[],'Fishing':[],'Camping, Backpacking & Hiking':[]},
-					'Water Sports':{'Swimming':[]},
-					'Exercise & Fitness':{},
-					'Racquet Sports':{}
-				},
 				'Home & Garden':{
 					'Bathroom Accessories':{'Bath Mats & Rugs':[]},
 					'Decor':{'Baskets':[],'Bird Feeders':[],'Birdhouses':[],'Bookends':[],'Candle Holders':[],'Candles':[],'Clocks':[],'Decorative Plates':[],'Figurines':[],'Home Fragrances':[],'Mirrors':[],'Picture Frames':[],'Rugs':[],'Seasonal & Holiday Decorations':[],'Seating & Sofa Cushions':[],'Shadow Boxes':[],'Slipcovers':[],'Throw Pillows':[],'Vases':[],'Weather Vanes & Roof Decor':[],'Wind Chimes':[]},
@@ -169,18 +165,6 @@
 					'Lighting':{'Lighting/Lamps':[]},
 					'Lighting Accessories':{'Lamp Shades':[]},
 					'Linens':{'Bedding':[],'Table Linens':[],'Towels':[]}
-				},
-				'Media':{
-					'Books':{'Fiction':[],'Non-Fiction':[],'Art Books':[],'Cooking Books':[],'Children\'s Books':[]}	
-				},
-				'Software':{
-					'Computer Software':{},
-					'Video Game Software':{}
-				},
-				'Office Supplies':{
-					'Filing & Organization':{'Calendars, Organizers & Planners':[]},
-					'General Supplies':{},
-					'Office Equipment':{}
 				},
 				'Men':{
 					'Accessories':{'Neckties':['Ascot Ties'],'Pocket Squares':[],'Watches':[],'Belts':[],'Hats':[],'Gloves':[],'Sunglasses':[],'Jewelry':['Cufflinks'],'Bowties':[],'Cufflinks':[],'Scarfs':[]},
@@ -205,12 +189,6 @@
 					'Tools':{}
 				},
 				'Luggage & Bags':{
-				},
-				'Eightylegs unmapped category':{
-				},
-				'Kids':{
-					'Girls':{'Accessories':[],'Clothing':[]},
-					'Boys':{'Accessories':[],'Clothing':[]}
 				},
 				'Gifts':{
 				},

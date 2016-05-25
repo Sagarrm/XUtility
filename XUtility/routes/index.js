@@ -32,13 +32,23 @@ router.post('/', function (req, res) {
 	var	mag_cat_query;
 	var allprodsArray_1;
 	var cookieSet;
+	var isCookiePresent = false;
 	cookieSet = req.cookies;
-	console.log("iN post All Cookies :  ", cookieSet);
+	//console.log("iN post All Cookies :  ", cookieSet);
 
-
-for(var cookieName in cookieSet){
-
+	if(cookieSet['storeValue'] == undefined || cookieSet['storeValue'] == ""){
+		allprodsArray_1 = error_imports.find().limit(10);
+	}
+	else{
+		var lim = parseInt(cookieSet['showLimit']);
+		allprodsArray_1 = error_imports.find({"store_name":cookieSet['storeValue']}).limit(lim);
+	}
+	
+/*for(var cookieName in cookieSet){
+		console.log("In for loop");
 		if(cookieName == 'storeValue'){
+			console.log("In first if");
+			isCookiePresent = true;
 			if(cookieSet[cookieName] == ""){
 				allprodsArray_1 = error_imports.find().limit(10);
 			}
@@ -50,6 +60,8 @@ for(var cookieName in cookieSet){
 		
 		}
 	}
+*/
+
 
 	allprodsArray_1.exec(function(){})
 	.then(function(prods1){
@@ -129,7 +141,7 @@ for(var cookieName in cookieSet){
 
        }
 
-	   		tempPromiseArray.forEach(function(doc){
+	   	/*	tempPromiseArray.forEach(function(doc){
 			if(doc.category_hierarchy!= undefined){
 				console.log("Updating magento categories!!!  "+ doc.category_hierarchy);
 
@@ -149,9 +161,10 @@ for(var cookieName in cookieSet){
 				});
 			}
 		});
-
+		*/
 
 		Promise.map(promiseArray, function(singleObj) {
+			
 				return magento_categories.find({"categories":singleObj.category}).exec(function(err,rescat){
 					if(err)
 						return console.log(err);
@@ -163,7 +176,86 @@ for(var cookieName in cookieSet){
 				})
 		})
 		.then(function(assoArrayasdfsd){
-			assoArrayasdfsd.forEach(function(sss){
+			if(assoArrayasdfsd.length == 0)
+			{
+					console.log("Empty array: ");
+					displayData(req, res)
+			}
+				
+			else{
+			
+		var processedItems=0;
+		 Promise.map(assoArrayasdfsd, function(sss) {
+			 //var processedItems=0;
+			console.log("Product url from array: "+sss.product_url);
+				var o_id = new MongoClient.ObjectID(sss.prodid);
+				console.log("product_url::::::::::: "+sss.product_url);
+
+				var newCatHirarchy = replace.all( "/" ).ignoringCase().from(sss.selected_category).with( ">" );
+
+				newCatHirarchy = newCatHirarchy.replace(">","");
+				console.log("newCatHirarchy:: "+newCatHirarchy);
+
+
+				var newCatName = replace.all( "/" ).ignoringCase().from(sss.selected_category).with( " " );
+				newCatName = newCatName.replace(" ","");
+
+
+
+				return conn.collection('error_import').findAndModify({_id:o_id},[['_id',1]],{ $set: {"product_category_ids":sss.category,"product_url":sss.product_url}},{new:true},
+				function(e, result){
+					console.log("result:: "+result);
+						 conn.collection('product_import').insert({"tags":result.value.tags + " " + newCatName,
+
+										
+										"category_hierarchy":newCatHirarchy,
+										"wildcard":result.value.wildcard,
+										"import_type":result.value.import_type,
+										"product_id":result.value.product_id,
+										"product_name":result.value.product_name,
+										"discount_currency":result.value.discount_currency,
+										"price_currency":result.value.price_currency,
+										"discount_price":result.value.discount_price,
+										"product_url":result.value.product_url,
+										"actual_price":result.value.actual_price,
+										"product_availability":result.value.product_availability,
+										"size":result.value.size,
+										"retailer_url":result.value.retailer_url,
+										"short_description":result.value.short_description,
+										"long_description":result.value.long_description,
+										"brand":result.value.brand,
+										"category_name":newCatName,
+										"source":result.value.source,
+										"color":result.value.color,
+										"product_image":result.value.product_image,
+										"gender":result.value.gender,
+										"product_pixel":result.value.product_pixel,
+										"store_name":result.value.store_name,
+										"sku_number":result.value.sku_number,
+										"merchant_id":result.value.merchant_id,
+										"product_url":result.value.product_url,
+										"product_category_ids":result.value.product_category_ids},
+										function(e, result1){
+											var objid = new MongoClient.ObjectID(result.value._id);
+						 conn.collection('error_import').deleteOne({"_id":o_id}, function(e, result){
+							console.log("delete block01");
+							processedItems = processedItems + 1;
+							console.log("Counter : "+processedItems);
+							if(processedItems==assoArrayasdfsd.length)
+							{
+								console.log("Counter reached ");
+								displayData(req, res)
+							}
+							
+								//return '123';
+						})
+				})
+				})
+		})
+		}
+		})
+		
+		/*assoArrayasdfsd.forEach(function(sss){
 				console.log("Product url from array: "+sss.product_url);
 				var o_id = new MongoClient.ObjectID(sss.prodid);
 				console.log("product_url::::::::::: "+sss.product_url);
@@ -216,15 +308,16 @@ for(var cookieName in cookieSet){
 
 						var objid = new MongoClient.ObjectID(result.value._id);
 						conn.collection('error_import').deleteOne({"_id":objid});
+						console.log("After delete");
 						}
 				});
-			})
-			setTimeout(function() {
-				displayData(req, res);
-					}, 2000);
-		});
+			})*/
+			//setTimeout(function() {
+			//	displayData(req, res);
+			//		}, 2000);
 	})
 	})
+
 	function toArray(_Object){
        var _Array = new Array();
        for(var name in _Object){
@@ -235,15 +328,29 @@ for(var cookieName in cookieSet){
 
 function displayData(req, res){
 
+console.log("In dispaly function!!!");
 	var allprodsArray;
 	var allStores;
 	var allStoreArray = [];
 	var cookieSet;
 	cookieSet = req.cookies;
-	console.log("iN GET All Cookies :  ", cookieSet);
+	//console.log("iN GET All Cookies :  ", cookieSet);
 
-	for(var cookieName in cookieSet){
+	console.log("Cookie storename value: "+cookieSet['storeValue']);
+	
+	if(cookieSet['storeValue'] == undefined || cookieSet['storeValue'] == ""){
+		allprodsArray = error_imports.find().limit(10);
+	}
+	else{
+		var lim = parseInt(cookieSet['showLimit']);
+		allprodsArray = error_imports.find({"store_name":cookieSet['storeValue']}).limit(lim);
+	}
+		
+/*	for(var cookieName in cookieSet){
+		console.log("In for loop: ");
 		if(cookieName == 'storeValue'){
+			var isCookiePresent = true;
+			console.log("In first if: ");
 			if(cookieSet[cookieName] == ""){
 				allprodsArray = error_imports.find().limit(10);
 			}
@@ -253,16 +360,25 @@ function displayData(req, res){
 				var lim = parseInt(cookieSet['showLimit']);
 				allprodsArray = error_imports.find({"store_name":cookieSet[cookieName]}).limit(lim);
 			}
-		}
+		}	
 	}
+*/
 
 		var allproducts = [];
 		var products = [];
 
+		error_imports.find().distinct('store_name', function(error, stores) {
+			sttrs = stores;
+			console.log("No of stores: "+sttrs.length);
+		});
+	
 		allprodsArray.exec(function(err,prods){
+		
 		if(err)
 			return console.log(err);
 		prods.forEach(function(prod){
+			console.log("Check");
+	//	Promise.map(prods, function(err,prod) {
 			var elem = new Object();
 			elem["id"] = prod._id
 			elem["tags"] = prod.id;
@@ -296,20 +412,48 @@ function displayData(req, res){
 
 		});
 	//res.render('index.html',{products:pro});
-	});
+	})
 	
 		var sttrs;
-	error_imports.find().distinct('store_name', function(error, stores) {
-		 //allStoreArray = stores.split(",");
-		console.log("@@@@@@@ "+stores[0]);
-	//   console.log("Storesssss:  "+stores);
-	sttrs = stores;
-		console.log("####### "+sttrs);
-		console.log("No of stores: "+sttrs.length);
+		var totalNoOfProducts;
+		var queryTotalNoOfProducts;
+		
+
+	
+	/*var queryTotalNoOfProducts = error_imports.find({"store_name":cookieSet['storeValue']}).count();
+	queryTotalNoOfProducts.exec(function(err,totalPrds){
+		totalNoOfProducts = totalPrds;
+		console.log("totalNoOfProducts:: "+totalNoOfProducts);
+		
 	});
+	*/
+	if(cookieSet['storeValue'] == undefined || cookieSet['storeValue'] == ""){
+		queryTotalNoOfProducts = error_imports.find().count();
+	}
+	else{
+		queryTotalNoOfProducts = error_imports.find({"store_name":cookieSet['storeValue']}).count();
+	}
+	queryTotalNoOfProducts.exec(function(err,totalPrds){
+		totalNoOfProducts = totalPrds;
+		console.log("totalNoOfProducts:: "+totalNoOfProducts);
+		if(totalNoOfProducts == 0)
+		{
+			console.log("Truncating array");
+			pro.length = 0;
+		}
+		else{
+			console.log("Non-empty array");
+		}
+		
+	});
+		
+	
 
 	setTimeout(function() {
-		res.render('index.html',{products:pro,strs:sttrs});
+		pro.forEach(function(temp_product){
+		console.log("Products before sending to html:  "+temp_product.sku_number);
+		})
+		res.render('index.html',{products:pro,strs:sttrs,totalNoOfProds:totalNoOfProducts});
 	}, 2000);
 	
 	}
